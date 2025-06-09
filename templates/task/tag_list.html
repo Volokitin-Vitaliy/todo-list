@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Tags - Todo List{% endblock %}
+
+{% block content %}
+<h1>Tags <a href="{% url 'task:tag_add' %}" class="btn btn-primary">Add Tag</a></h1>
+<table class="table">
+    <thead>
+        <tr class="list">
+          <th>Name</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for tag in tags %}
+        <tr class="list">
+          <td>{{ tag.name }}</td>
+          <td>
+            <a href="{% url 'task:tag_edit' tag.pk %}" class="btn btn-secondary">Edit</a>
+          </td>
+          <td>
+            <a href="{% url 'task:tag_delete' tag.pk %}" class="btn btn-secondary">Delete</a>
+          </td>
+        </tr>
+    {% empty %}
+        <tr class="list"><td colspan="2">No tags yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

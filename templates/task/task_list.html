@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks - Todo List{% endblock %}
+
+{% block content %}
+  <h1>TODO list <a href="{% url 'task:task_add' %}" class="btn btn-primary btn-hover">Add Task</a></h1>
+  <br>
+  <div>
+    {% for task in tasks %}
+      <p><strong>Content:</strong> {{ task.content }}</p>
+      <p><strong>Created At:</strong> {{ task.created_at|date:"Y-m-d H:i" }}</p>
+      <p>
+        <strong>Tags:</strong>
+        {% for tag in task.tags.all %}
+          {{ tag.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+          -
+        {% endfor %}
+        <a href="{% url 'task:task_edit' task.pk %}">Update</a> |
+        <a href="{% url 'task:task_delete' task.pk %}">Delete</a> |
+        {% if task.is_done %}
+          <a href="{% url 'task:task_toggle' task.pk %}" class="btn btn-secondary">Undo</a>
+        {% else %}
+          <a href="{% url 'task:task_toggle' task.pk %}" class="btn btn-success">Complete</a>
+        {% endif %}
+        <hr>
+      </p>
+    {% empty %}
+      No tasks yet.
+    {% endfor %}
+  </div>
+{% endblock %}
